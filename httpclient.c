@@ -44,10 +44,16 @@ void GetHost(char * src, char * web, char * file, int * port) {
 	memset(web, 0, sizeof(web));
 	memset(file, 0, sizeof(file));
 	*port = 0;
-	if(!(*src)) return;
+	if(!(*src))
+	  return;
+
 	pA = src;
-	if(!strncmp(pA, "http://", strlen("http://"))) pA = src+strlen("http://");
-	else if(!strncmp(pA, "https://", strlen("https://"))) pA = src+strlen("https://");
+
+	if(!strncmp(pA, "http://", strlen("http://")))
+	  pA = src+strlen("http://");
+	else if(!strncmp(pA, "https://", strlen("https://"))) 
+	  pA = src+strlen("https://");
+
 	pB = strchr(pA, '/');
 	if(pB) {
 		memcpy(web, pA, strlen(pA) - strlen(pB));
@@ -56,12 +62,20 @@ void GetHost(char * src, char * web, char * file, int * port) {
 			file[strlen(pB) - 1] = 0;
 		}
 	}
-	else memcpy(web, pA, strlen(pA));
-	if(pB) web[strlen(pA) - strlen(pB)] = 0;
-	else web[strlen(pA)] = 0;
+	else 
+	  memcpy(web, pA, strlen(pA));
+
+	if(pB) 
+	  web[strlen(pA) - strlen(pB)] = 0;
+	else 
+	  web[strlen(pA)] = 0;
+
 	pA = strchr(web, ':');
-	if(pA) *port = atoi(pA + 1);
-	else *port = 80;
+
+	if(pA) 
+	  *port = atoi(pA + 1);
+	else 
+	  *port = 80;
 }
 
 /*********************************************************************
@@ -135,16 +149,23 @@ int main(int argc, char *argv[])
 	printf("%s", request);/*准备request，将要发送给主机*/
 
 	/*取得真实的文件名*/
-	if(host_file && *host_file) pt = Rstrchr(host_file, '/');
-	else pt = 0;
+	if(host_file && *host_file) 
+	  pt = Rstrchr(host_file, '/');
+	else 
+	  pt = 0;
 
 	memset(local_file, 0, sizeof(local_file));
 	if(pt && *pt) {
-		if((pt + 1) && *(pt+1)) strcpy(local_file, pt + 1);
-		else memcpy(local_file, host_file, strlen(host_file) - 1);
+		if((pt + 1) && *(pt+1)) 
+		  strcpy(local_file, pt + 1);
+		else 
+		  memcpy(local_file, host_file, strlen(host_file) - 1);
 	}
-	else if(host_file && *host_file) strcpy(local_file, host_file);
-	else strcpy(local_file, "index.html");
+	else if(host_file && *host_file)
+	  strcpy(local_file, host_file);
+	else 
+	  strcpy(local_file, "index.html");
+
 	printf("local filename to write:%s\n\n", local_file);
 
 	/*发送http请求request*/
